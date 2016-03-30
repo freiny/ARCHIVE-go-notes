@@ -32,7 +32,7 @@ func main() {
 
 	// Range for loop
 	str := "hey"
-	for index, key := range str {
+	for index, element := range str {
 		fmt.Println(index, string(key))
 	}
 	fmt.Println()
