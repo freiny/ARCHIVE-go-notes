@@ -1,5 +1,3 @@
-Variable Declaration and Assignment
-<pre><code>
 package main
 
 import "fmt"
@@ -74,17 +72,3 @@ func main() {
 	// GoodBye
 
 }
-</code></pre>
-
-OUTPUT:
-<pre><code>
-0
-4
-9
-0 0 0
-1 2 3
-4 5 6
-7 seven 7
-Hello
-GoodBye
-</code></pre>
