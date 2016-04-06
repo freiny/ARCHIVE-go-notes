@@ -34,17 +34,17 @@ func main() {
 	// OUTPUT: {3 0 [1 2 3]}
 	// 1
 
-	// 	fmt.Print(s.pop())
+	// fmt.Print(s.pop())
 	// // OUTPUT: panic: ERROR: pop to stack failed bottom of stack reached
 
 }
 
-const SIZE_MAX = 3
+const max = 3
 
 type stack struct {
 	sizeMax int
 	size    int
-	list    [SIZE_MAX]int
+	list    [max]int
 }
 
 func (s stack) new() stack {
