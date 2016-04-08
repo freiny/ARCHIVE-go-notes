@@ -1,5 +1,3 @@
-Loops
-<pre><code>
 package main
 
 import "fmt"
@@ -43,13 +41,3 @@ func main() {
 	// 2 y
 
 }
-</code></pre>
-
-OUTPUT:
-<pre><code>
-0 1 2
-0123
-0 h
-1 e
-2 y
-</code></pre>
