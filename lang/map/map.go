@@ -4,6 +4,16 @@ import "fmt"
 
 func main() {
 
+	team := map[string]bool{}
+	team["jane"] = true
+	team["john"] = true
+	team["mel"] = true
+
+	delete(team, "jane")
+
+	fmt.Println(team["bob"], team["jane"], team["mel"])
+	// OUTPUT: false true true
+
 	m := map[string]int{
 		"a": 1,
 		"b": 2,
