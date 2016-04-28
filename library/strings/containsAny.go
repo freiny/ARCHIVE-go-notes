@@ -14,8 +14,8 @@ func main() {
 
 		strings.ContainsAny("puppy", "aeio"),
 		strings.ContainsAny("puppy", "P"),
+		strings.ContainsAny("puppy", ""),
 		strings.ContainsAny("", ""),
-		strings.ContainsAny("ab", ""),
 		// false
 	}
 	fmt.Println(b)
