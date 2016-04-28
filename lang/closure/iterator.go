@@ -9,6 +9,13 @@ func main() {
 	for iter() {
 		fmt.Println("hello")
 	}
+	// OUTPUT:
+	// hello
+	// hello
+	// hello
+	// hello
+	// hello
+
 }
 
 func iterator() func(...int) bool {
