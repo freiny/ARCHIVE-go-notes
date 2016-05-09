@@ -28,5 +28,11 @@ func main() {
 	// true
 	// false
 
+	fmt.Println(reflect.DeepEqual([]string{"a", "b", "c"}, []string{"a", "b", "c"}))
+	fmt.Println(reflect.DeepEqual([]string{"a", "b", "c"}, []string{"a", "b", "c", "d"}))
+	// OUTPUT:
+	// true
+	// false
+
 	fmt.Println()
 }
