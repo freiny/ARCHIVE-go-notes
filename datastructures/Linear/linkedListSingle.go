@@ -5,10 +5,10 @@ import "fmt"
 func main() {
 
 	l := LinkedList{}
-	l.insert(1)
-	l.insert(2)
-	l.insert(3)
-	l.insert(4)
+	l.append(1)
+	l.append(2)
+	l.append(3)
+	l.append(4)
 	l.traverse(print)
 	// OUTPUT:
 	// 1 false
@@ -40,7 +40,7 @@ type LinkedList struct {
 	tail *node
 }
 
-func (l *LinkedList) insert(value int) {
+func (l *LinkedList) append(value int) {
 	n := node{value: value}
 	if l.head == nil {
 		l.head = &n
