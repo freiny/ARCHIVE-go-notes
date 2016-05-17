@@ -73,7 +73,7 @@ Variable-length array
 <pre>
 Doubly linked list
 Array list
-Linked list
+- Linked list
 Self-organizing list
 Skip list
 Unrolled linked list
