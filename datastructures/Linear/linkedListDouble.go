@@ -3,43 +3,43 @@ package main
 import "fmt"
 
 func main() {
+	l := DLinkedList{}
 
-	l := DoublyLinkedList{}
-	l.append(0)
-	l.append(1)
-	l.append(2)
-	l.prepend(-1)
-	l.prepend(-2)
-	l.prepend(-3)
+	l.insertAfter(l.tail, node{value: 1})
+	l.insertAfter(l.tail, node{value: 3})
+	l.insertAfter(l.tail, node{value: 5})
 	l.traverseNext(print)
 	// OUTPUT:
-	// -3 true false
-	// -2 false false
-	// -1 false false
-	// 0 false false
-	// 1 false false
-	// 2 false true
+	// 1 false
+	// 3 false
+	// 5 true
 
-	l.deleteHead()
-	l.deleteHead()
-	l.deleteTail()
+	l.insertBefore(l.head.next, node{value: 2})
+	l.insertBefore(l.tail, node{value: 4})
 	l.traverseNext(print)
 	// OUTPUT:
-	// -1 true false
-	// 0 false false
-	// 1 false true
+	// 1 false
+	// 2 false
+	// 3 false
+	// 4 false
+	// 5 true
+
+	l.remove(l.head.next.next)
+	l.remove(l.head)
+	l.remove(l.tail)
+	l.traverseNext(print)
+	// OUTPUT:
+	// 2 true false
+	// 4 false true
 
 	l.traversePrev(print)
 	// OUTPUT:
-	// 1 false true
-	// 0 false false
-	// -1 true false
-
+	// 4 false true
+	// 2 true false
 }
 
-func print(n *node) bool {
+func print(n *node) {
 	fmt.Println(n.value, n.prev == nil, n.next == nil)
-	return false
 }
 
 type node struct {
@@ -48,59 +48,66 @@ type node struct {
 	next  *node
 }
 
-type DoublyLinkedList struct {
+type DLinkedList struct {
 	head *node
 	tail *node
 }
 
-func (l *DoublyLinkedList) prepend(value int) {
-	n := node{value: value}
-	if l.head == nil {
-		l.head = &n
-		l.tail = &n
-	} else {
-		n.next = l.head
-		l.head.prev = &n
-		l.head = &n
-	}
-}
-
-func (l *DoublyLinkedList) append(value int) {
-	n := node{value: value}
-	if l.head == nil {
-		l.head = &n
-		l.tail = &n
-	} else {
-		n.prev = l.tail
-		l.tail.next = &n
-		l.tail = l.tail.next
-	}
-}
-
-func (l *DoublyLinkedList) deleteHead() {
-	n := l.head.next
-	n.prev = nil
-	l.head = n
-}
-
-func (l *DoublyLinkedList) deleteTail() {
-	n := l.tail.prev
-	n.next = nil
-	l.tail = n
-}
-
-func (l *DoublyLinkedList) traverseNext(f func(*node) bool) {
+func (l *DLinkedList) traverseNext(f func(*node)) {
 	for n := l.head; n != nil; n = n.next {
-		if f(n) {
-			break
-		}
+		f(n)
 	}
 }
 
-func (l *DoublyLinkedList) traversePrev(f func(*node) bool) {
+func (l *DLinkedList) traversePrev(f func(*node)) {
 	for n := l.tail; n != nil; n = n.prev {
-		if f(n) {
-			break
-		}
+		f(n)
+	}
+}
+
+func (l *DLinkedList) insertBefore(n *node, new node) {
+	switch {
+	case l.head == nil:
+		l.head = &new
+		l.tail = &new
+	case n == l.head:
+		new.next = l.head
+		l.head.prev = &new
+		l.head = &new
+	default:
+		n.prev.next = &new
+		new.prev = n.prev
+		new.next = n
+		n.prev = &new
+	}
+}
+
+func (l *DLinkedList) insertAfter(n *node, new node) {
+	switch {
+	case l.head == nil:
+		l.head = &new
+		l.tail = &new
+	case n == l.tail:
+		n.next = &new
+		new.prev = n
+		l.tail = &new
+	default:
+		new.next = n.next
+		n.next = &new
+	}
+}
+
+func (l *DLinkedList) remove(n *node) {
+	switch {
+	case l.head == nil:
+	case n == l.head:
+		l.head = n.next
+		l.head.prev = nil
+	case n == l.tail:
+		l.tail = n.prev
+		l.tail.next = nil
+	default:
+		n.prev.next = n.next
+		n.next.prev = n.prev
 	}
 }
