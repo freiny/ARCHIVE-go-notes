@@ -5,29 +5,52 @@ import "fmt"
 func main() {
 
 	l := LinkedList{}
-	l.append(1)
-	l.append(2)
-	l.append(3)
-	l.append(4)
+
+	l.insertAfter(l.tail, node{value: 1})
+	l.insertAfter(l.tail, node{value: 5})
+	l.insertAfter(l.head, node{value: 3})
+	l.traverse(print)
+	// OUTPUT:
+	// 1 false
+	// 3 false
+	// 5 true
+
+	l.insertAfter(l.head.next, node{value: 4})
+	l.insertAfter(l.head, node{value: 2})
 	l.traverse(print)
 	// OUTPUT:
 	// 1 false
 	// 2 false
 	// 3 false
-	// 4 true
+	// 4 false
+	// 5 true
 
-	l.delete()
-	l.delete()
+	fmt.Println(l.prev(l.head))
+	fmt.Println(l.prev(l.head.next).value)
+	fmt.Println(l.prev(l.tail).value)
+	// OUTPUT:
+	// <nil>
+	// 1
+	// 4
+
+	l.remove(l.head.next.next)
+	l.remove(l.head)
+	l.remove(l.tail)
 	l.traverse(print)
 	// OUTPUT:
-	// 1 false
-	// 2 true
+	// 2 false
+	// 4 true
 
+	l.insertBefore(l.tail, node{value: 3})
+	l.traverse(print)
+	// OUTPUT:
+	// 2 false
+	// 3 false
+	// 4 true
 }
 
-func print(n *node) bool {
+func print(n *node) {
 	fmt.Println(n.value, n.next == nil)
-	return false
 }
 
 type node struct {
@@ -40,33 +63,71 @@ type LinkedList struct {
 	tail *node
 }
 
-func (l *LinkedList) append(value int) {
-	n := node{value: value}
+func (l *LinkedList) insertAfter(n *node, new node) {
 	if l.head == nil {
-		l.head = &n
-		l.tail = &n
-	}
-	l.tail.next = &n
-	l.tail = l.tail.next
-}
-
-func (l *LinkedList) delete() {
-	f := func(n *node) bool {
-		if n.next.next == nil {
-			l.tail = n
-			l.tail.next = nil
-			return true
+		l.head = &new
+		l.tail = &new
+	} else {
+		if n == l.tail {
+			l.tail = &new
 		}
-		return false
+		new.next = n.next
+		n.next = &new
 	}
-
-	l.traverse(f)
 }
 
-func (l *LinkedList) traverse(f func(*node) bool) {
+func (l *LinkedList) insertBefore(n *node, new node) {
+
+	switch {
+	case n == l.head:
+		if l.head == nil {
+			l.head = &new
+			l.tail = &new
+		} else {
+			l.head = &new
+			l.head.next = n
+		}
+	default:
+		prev := l.prev(n)
+		prev.next = &new
+		new.next = n
+	}
+}
+
+func (l *LinkedList) remove(n *node) {
+	switch {
+	case n == nil || l.head == nil:
+	case n == l.head:
+		l.head = n.next
+		n.next = nil
+	case n == l.tail:
+		prev := l.prev(n)
+		l.tail = prev
+		l.tail.next = nil
+	default:
+		prev := l.prev(n)
+		prev.next = n.next
+	}
+}
+
+func (l *LinkedList) traverse(f func(*node)) {
 	for n := l.head; n != nil; n = n.next {
-		if f(n) {
-			break
-		}
+		f(n)
 	}
+}
+
+func (l *LinkedList) prev(n *node) *node {
+	if l.head == nil || n == l.head {
+		return nil
+	}
+
+	var prev *node
+	for i := l.head; i != nil; i = i.next {
+		if i == n {
+			return prev
+		}
+		prev = i
+	}
+
+	return nil
 }
