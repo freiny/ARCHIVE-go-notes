@@ -25,4 +25,17 @@ func main() {
 	// OUTPUT:
 	// name Pat age 30
 	// name Rita age 22
+
+	// INPUT:
+	// $ command -name ""
+	// OUTPUT:
+	// name Pat age 30
+	// name  age 30
+
+	// INPUT:
+	// $ command -name=
+	// OUTPUT:
+	// name Pat age 30
+	// name  age 30
+
 }
