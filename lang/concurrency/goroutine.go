@@ -1,19 +1,28 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
 	go dispLower()
 	go dispUpper()
 
-	var input string
-	fmt.Println("Press Enter")
-	fmt.Scanln(&input)
+	// goroutines exit when main() ends
+	// so, delay end of main()
+	time.Sleep(500 * time.Millisecond)
+	fmt.Println()
 
-	// OUTPUT (unpredictable):
-	// Press Enter
-	// abcdefghijklAmnBoCpDqErFstGuHvIwJxKyLzMNOPQRSTUVWXYZ
-	// Done
+	// POSSIBLE OUTPUT (unpredictable):
+	// abcAdefghiBjCklmDnEoFpGqHrIstJuKvwLxMyNzOPQRSTUVWXYZ
+
+	// POSSIBLE OUTPUT (unpredictable):
+	// aAbcBdCeDfEgFhGHiIjJkKlLmMnNoOPpQqRrSsTtUuVvWwXYxZyz
+
+	// POSSIBLE OUTPUT (unpredictable):
+	// abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+
 }
 
 func dispLower() {
