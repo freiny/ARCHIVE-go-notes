@@ -1,40 +1,34 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
 func main() {
-	go dispLower()
-	go dispUpper()
 
-	// goroutines exit when main() ends
-	// so, delay end of main()
-	time.Sleep(500 * time.Millisecond)
-	fmt.Println()
+	messages := make(chan string)
+	go disp("abcdefghijklmnopqrstuvwxyz", messages, "disp-0-done")
+	go disp("ABCDEFGHIJKLMNOPQRSTUVWXYZ", messages, "disp-1-done")
+	numTasks := 2
 
-	// POSSIBLE OUTPUT (unpredictable):
-	// abcAdefghiBjCklmDnEoFpGqHrIstJuKvwLxMyNzOPQRSTUVWXYZ
-
-	// POSSIBLE OUTPUT (unpredictable):
-	// aAbcBdCeDfEgFhGHiIjJkKlLmMnNoOPpQqRrSsTtUuVvWwXYxZyz
+	out := ""
+	for i := 0; i < numTasks; i++ {
+		out += "\n[" + <-messages + "]"
+	}
+	fmt.Println(out)
 
 	// POSSIBLE OUTPUT (unpredictable):
-	// abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+	// AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtuUvVwWxXyYzZ
+	// [disp-0-done]
+	// [disp-1-done]
 
+	// POSSIBLE OUTPUT (unpredictable):
+	// ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+	// [disp-1-done]
+	// [disp-0-done]
 }
 
-func dispLower() {
-	s := "abcdefghijklmnopqrstuvwxyz"
+func disp(s string, messages chan string, doneMsg string) {
 	for i := 0; i < len(s); i++ {
 		fmt.Print(string(s[i]))
 	}
-}
-
-func dispUpper() {
-	s := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	for i := 0; i < len(s); i++ {
-		fmt.Print(string(s[i]))
-	}
+	messages <- doneMsg
 }
